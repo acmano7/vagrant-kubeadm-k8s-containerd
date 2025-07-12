@@ -80,6 +80,6 @@ echo "
 Use it to log in at:
 kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard-kong-proxy 8443:443
 
-https://localhost:9443
+https://localhost:8443
 "
 fi
