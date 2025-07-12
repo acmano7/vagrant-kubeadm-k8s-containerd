@@ -34,14 +34,13 @@ https://discuss.hashicorp.com/t/vagrant-2-2-18-osx-11-6-cannot-create-private-ne
 To provision the cluster, execute the following commands.
 
 ```shell
-git clone https://github.com/acmano7/vagrant-kubeadm-kubernetes.git
-cd vagrant-kubeadm-kubernetes
+git clone https://github.com/acmano7/vagrant-kubeadm-k8s-containerd.git
+cd vagrant-kubeadm-k8s-containerd
 vagrant up
 ```
 ## Set Kubeconfig file variable
 
 ```shell
-cd vagrant-kubeadm-kubernetes
 cd configs
 export KUBECONFIG=$(pwd)/config
 ```
@@ -65,17 +64,17 @@ vagrant ssh -c "/vagrant/scripts/dashboard.sh" master
 
 To get the login token, copy it from _config/token_ or run the following command:
 ```shell
-kubectl -n kubernetes-dashboard get secret/admin-user -o go-template="{{.data.token | base64decode}}"
+kubectl -n kubernetes-dashboard get secret/dashboard-admin-user -o 'go-template={{.data.token | base64decode}}'
 ```
 
-Proxy the dashboard:
+Forward Kubernetes Dashboard service port:
 ```shell
-kubectl proxy
+kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard-kong-proxy 8443:443
 ```
 
 Open the site in your browser:
 ```shell
-http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/overview?namespace=kubernetes-dashboard
+https://localhost:8443
 ```
 
 ## To shutdown the cluster,
